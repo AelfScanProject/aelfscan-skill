@@ -46,6 +46,14 @@ export interface AelfscanConfig {
   defaultChainId: string;
   timeoutMs: number;
   retry: number;
+  retryBaseMs: number;
+  retryMaxMs: number;
+  maxConcurrentRequests: number;
+  cacheTtlMs: number;
+  maxResultCount: number;
+  mcpMaxItems: number;
+  mcpMaxChars: number;
+  mcpIncludeRaw: boolean;
 }
 
 export interface SearchInput {
@@ -243,4 +251,37 @@ export interface StatisticsQueryInput {
 export interface StatisticsDateRangeInput extends StatisticsQueryInput {
   startDate: string;
   endDate: string;
+}
+
+export type StatisticsMetric =
+  | 'dailyTransactions'
+  | 'uniqueAddresses'
+  | 'dailyActiveAddresses'
+  | 'monthlyActiveAddresses'
+  | 'blockProduceRate'
+  | 'avgBlockDuration'
+  | 'cycleCount'
+  | 'nodeBlockProduce'
+  | 'dailyAvgTransactionFee'
+  | 'dailyTxFee'
+  | 'dailyTotalBurnt'
+  | 'dailyElfPrice'
+  | 'dailyDeployContract'
+  | 'dailyBlockReward'
+  | 'dailyAvgBlockSize'
+  | 'topContractCall'
+  | 'dailyContractCall'
+  | 'dailySupplyGrowth'
+  | 'dailyMarketCap'
+  | 'dailyStaked'
+  | 'dailyHolder'
+  | 'dailyTvl'
+  | 'nodeCurrentProduceInfo'
+  | 'elfSupply'
+  | 'dailyTransactionInfo'
+  | 'dailyActivityAddress'
+  | 'currencyPrice';
+
+export interface StatisticsMetricInput extends StatisticsQueryInput {
+  metric: StatisticsMetric;
 }

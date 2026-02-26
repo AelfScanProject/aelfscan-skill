@@ -1,11 +1,13 @@
 import { request } from '../../lib/http-client.js';
 import { requireField } from '../../lib/errors.js';
+import type { ApiPagedList, TokenDetailResponse, TokenHolderItem, TokenSummary, TokenTransferItem } from '../../lib/api-types.js';
 import type { TokenDetailInput, TokenHoldersInput, TokenListInput, TokenTransfersInput, ToolResult } from '../../lib/types.js';
 import { executeTool, resolveAddress, resolveChainId, toPaginationQuery } from './common.js';
 
-export async function getTokens(input: TokenListInput = {}): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
-    return request<unknown>({
+export async function getTokens(input: TokenListInput = {}): Promise<ToolResult<ApiPagedList<TokenSummary>>> {
+  return executeTool(async (traceId) => {
+    return request<ApiPagedList<TokenSummary>>({
+      traceId,
       path: '/api/app/token/list',
       query: {
         chainId: resolveChainId(input.chainId),
@@ -22,11 +24,12 @@ export async function getTokens(input: TokenListInput = {}): Promise<ToolResult<
   }, 'GET_TOKENS_FAILED');
 }
 
-export async function getTokenDetail(input: TokenDetailInput): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
+export async function getTokenDetail(input: TokenDetailInput): Promise<ToolResult<TokenDetailResponse>> {
+  return executeTool(async (traceId) => {
     requireField(input.symbol, 'symbol');
 
-    return request<unknown>({
+    return request<TokenDetailResponse>({
+      traceId,
       path: '/api/app/token/detail',
       query: {
         chainId: resolveChainId(input.chainId),
@@ -36,11 +39,12 @@ export async function getTokenDetail(input: TokenDetailInput): Promise<ToolResul
   }, 'GET_TOKEN_DETAIL_FAILED');
 }
 
-export async function getTokenTransfers(input: TokenTransfersInput): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
+export async function getTokenTransfers(input: TokenTransfersInput): Promise<ToolResult<ApiPagedList<TokenTransferItem>>> {
+  return executeTool(async (traceId) => {
     requireField(input.symbol, 'symbol');
 
-    return request<unknown>({
+    return request<ApiPagedList<TokenTransferItem>>({
+      traceId,
       path: '/api/app/token/transfers',
       query: {
         chainId: resolveChainId(input.chainId),
@@ -57,9 +61,10 @@ export async function getTokenTransfers(input: TokenTransfersInput): Promise<Too
   }, 'GET_TOKEN_TRANSFERS_FAILED');
 }
 
-export async function getTokenHolders(input: TokenHoldersInput): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
-    return request<unknown>({
+export async function getTokenHolders(input: TokenHoldersInput): Promise<ToolResult<ApiPagedList<TokenHolderItem>>> {
+  return executeTool(async (traceId) => {
+    return request<ApiPagedList<TokenHolderItem>>({
+      traceId,
       path: '/api/app/token/holders',
       query: {
         chainId: resolveChainId(input.chainId),

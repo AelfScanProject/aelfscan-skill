@@ -1,4 +1,5 @@
 export * from './lib/types.js';
+export * from './lib/api-types.js';
 export { getConfig, resetConfigCache } from './lib/config.js';
 
 export { search, getSearchFilters } from './src/core/search.js';
@@ -69,4 +70,6 @@ export {
   getDailyTransactionInfo,
   getDailyActivityAddress,
   getCurrencyPrice,
+  getStatisticsByMetric,
+  STATISTICS_METRICS,
 } from './src/core/statistics.js';

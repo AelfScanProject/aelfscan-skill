@@ -40,4 +40,30 @@ describe('tool result shape', () => {
     expect(result.error?.code).toBe('HTTP_ERROR');
     expect(typeof result.traceId).toBe('string');
   });
+
+  test('propagates traceId to request header', async () => {
+    let traceHeader = '';
+
+    globalThis.fetch = (async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const headers = new Headers(init?.headers);
+      traceHeader = headers.get('X-Trace-Id') || '';
+
+      return new Response(
+        JSON.stringify({
+          code: '20000',
+          data: {
+            total: 0,
+            blocks: [],
+          },
+          message: '',
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      );
+    }) as unknown as typeof fetch;
+
+    const result = await getBlocks({ chainId: 'AELF', maxResultCount: 1, skipCount: 0 });
+
+    expect(result.success).toBe(true);
+    expect(traceHeader).toBe(result.traceId);
+  });
 });

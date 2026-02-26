@@ -1,6 +1,6 @@
 {
   "name": "@aelfscan/agent-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AelfScan explorer skill toolkit for AI agents: MCP, CLI, and SDK interfaces.",
   "type": "module",
   "main": "index.ts",
@@ -29,8 +29,12 @@
     "setup": "bun run bin/setup.ts",
     "mcp": "bun run src/mcp/server.ts",
     "cli": "bun run aelfscan_skill.ts",
+    "build:openclaw": "bun run bin/generate-openclaw.ts",
+    "build:openclaw:check": "bun run bin/generate-openclaw.ts --check",
     "test": "bun test tests/",
     "test:unit": "bun test tests/unit/",
+    "test:unit:coverage": "bun run test:unit --coverage --coverage-reporter=text --coverage-reporter=lcov --coverage-dir=coverage",
+    "coverage:badge": "bun run bin/generate-coverage-badge.ts",
     "test:integration": "bun test tests/integration/",
     "test:e2e": "bun test tests/e2e/"
   },
@@ -45,6 +49,17 @@
     "explorer"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AelfScanProject/aelfscan-skill.git"
+  },
+  "homepage": "https://github.com/AelfScanProject/aelfscan-skill#readme",
+  "bugs": {
+    "url": "https://github.com/AelfScanProject/aelfscan-skill/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "commander": "^12.1.0",

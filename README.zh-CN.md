@@ -10,6 +10,8 @@
 - Token：列表、详情、转账、持有人
 - NFT：合集列表/详情、转账、持有人、库存、Item 详情/持有人/活动
 - Statistics：交易/地址活跃度、产块指标、手续费/奖励/销毁、供给/市值/质押/TVL、节点与 ELF 供给、按日期区间汇总
+- 单一元数据源：SDK/CLI/MCP/OpenClaw 共用 tool descriptor
+- MCP 输出治理：数组截断 + 文本长度上限 + `raw` 可配置
 - 统一返回模型：`ToolResult<T>`，包含 `traceId`、标准化错误和 `raw` 原始响应
 
 ## 架构
@@ -20,7 +22,8 @@ aelfscan-skill/
 ├── aelfscan_skill.ts        # CLI 适配层
 ├── src/
 │   ├── core/                # 域逻辑（search/blockchain/address/token/nft/statistics）
-│   └── mcp/server.ts        # MCP 适配层
+│   ├── tooling/             # Tool descriptor 单一真源
+│   └── mcp/                 # MCP 适配层与输出治理
 ├── lib/                     # config/http/errors/trace/types
 ├── bin/setup.ts             # claude/cursor/openclaw 一键配置
 ├── openclaw.json
@@ -58,6 +61,7 @@ bun run aelfscan_skill.ts blockchain log-events --input '{"chainId":"AELF","cont
 bun run aelfscan_skill.ts address detail --input '{"chainId":"AELF","address":"JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE"}'
 bun run aelfscan_skill.ts statistics daily-transactions --input '{"chainId":"AELF"}'
 bun run aelfscan_skill.ts statistics daily-transaction-info --input '{"chainId":"AELF","startDate":"2026-02-20","endDate":"2026-02-26"}'
+bun run aelfscan_skill.ts statistics metric --input '{"metric":"dailyTransactions","chainId":"AELF"}'
 ```
 
 ## MCP 配置模板
@@ -72,12 +76,15 @@ bun run setup cursor
 bun run setup cursor --global
 bun run setup openclaw
 bun run setup list
+bun run build:openclaw
 ```
 
 ## 测试
 
 ```bash
 bun run test:unit
+bun run test:unit:coverage
+bun run coverage:badge
 bun run test:integration
 bun run test:e2e
 
@@ -91,6 +98,14 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 - `AELFSCAN_DEFAULT_CHAIN_ID`（默认空字符串，表示 multi-chain）
 - `AELFSCAN_TIMEOUT_MS`（默认 `10000`）
 - `AELFSCAN_RETRY`（默认 `1`）
+- `AELFSCAN_RETRY_BASE_MS`（默认 `200`）
+- `AELFSCAN_RETRY_MAX_MS`（默认 `3000`）
+- `AELFSCAN_MAX_CONCURRENT_REQUESTS`（默认 `5`）
+- `AELFSCAN_CACHE_TTL_MS`（默认 `60000`）
+- `AELFSCAN_MAX_RESULT_COUNT`（默认 `200`）
+- `AELFSCAN_MCP_MAX_ITEMS`（默认 `50`）
+- `AELFSCAN_MCP_MAX_CHARS`（默认 `60000`）
+- `AELFSCAN_MCP_INCLUDE_RAW`（默认 `false`）
 
 ## License
 

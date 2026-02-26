@@ -1,6 +1,20 @@
+import type {
+  DailyActivityAddressResponse,
+  DailyTransactionInfoResponse,
+  DailyTransactionsResponse,
+  ElfSupplyResponse,
+  NodeCurrentProduceInfoResponse,
+  StatisticsListResponse,
+} from '../../lib/api-types.js';
 import { requireField } from '../../lib/errors.js';
 import { request } from '../../lib/http-client.js';
-import type { StatisticsDateRangeInput, StatisticsQueryInput, ToolResult } from '../../lib/types.js';
+import type {
+  StatisticsDateRangeInput,
+  StatisticsMetric,
+  StatisticsMetricInput,
+  StatisticsQueryInput,
+  ToolResult,
+} from '../../lib/types.js';
 import { executeTool, resolveChainId } from './common.js';
 
 function withChainId(input: StatisticsQueryInput): Record<string, unknown> {
@@ -10,13 +24,14 @@ function withChainId(input: StatisticsQueryInput): Record<string, unknown> {
   };
 }
 
-async function getStatistics(
+async function getStatistics<T>(
   path: string,
   input: StatisticsQueryInput = {},
   fallbackCode: string,
-): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
-    const result = await request<unknown>({
+): Promise<ToolResult<T>> {
+  return executeTool(async (traceId) => {
+    const result = await request<T>({
+      traceId,
       path,
       query: withChainId(input),
     });
@@ -25,16 +40,17 @@ async function getStatistics(
   }, fallbackCode);
 }
 
-async function getDateRangeStatistics(
+async function getDateRangeStatistics<T>(
   path: string,
   input: StatisticsDateRangeInput,
   fallbackCode: string,
-): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
+): Promise<ToolResult<T>> {
+  return executeTool(async (traceId) => {
     requireField(input.startDate, 'startDate');
     requireField(input.endDate, 'endDate');
 
-    const result = await request<unknown>({
+    const result = await request<T>({
+      traceId,
       path,
       query: withChainId(input),
     });
@@ -43,114 +59,217 @@ async function getDateRangeStatistics(
   }, fallbackCode);
 }
 
-export async function getDailyTransactions(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyTransactions(input: StatisticsQueryInput = {}): Promise<ToolResult<DailyTransactionsResponse>> {
   return getStatistics('/api/app/statistics/dailyTransactions', input, 'GET_DAILY_TRANSACTIONS_FAILED');
 }
 
-export async function getUniqueAddresses(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getUniqueAddresses(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/uniqueAddresses', input, 'GET_UNIQUE_ADDRESSES_FAILED');
 }
 
-export async function getDailyActiveAddresses(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyActiveAddresses(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyActiveAddresses', input, 'GET_DAILY_ACTIVE_ADDRESSES_FAILED');
 }
 
-export async function getMonthlyActiveAddresses(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getMonthlyActiveAddresses(
+  input: StatisticsQueryInput = {},
+): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/monthlyActiveAddresses', input, 'GET_MONTHLY_ACTIVE_ADDRESSES_FAILED');
 }
 
-export async function getBlockProduceRate(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getBlockProduceRate(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/blockProduceRate', input, 'GET_BLOCK_PRODUCE_RATE_FAILED');
 }
 
-export async function getAvgBlockDuration(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getAvgBlockDuration(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/avgBlockDuration', input, 'GET_AVG_BLOCK_DURATION_FAILED');
 }
 
-export async function getCycleCount(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getCycleCount(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/cycleCount', input, 'GET_CYCLE_COUNT_FAILED');
 }
 
-export async function getNodeBlockProduce(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getNodeBlockProduce(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/nodeBlockProduce', input, 'GET_NODE_BLOCK_PRODUCE_FAILED');
 }
 
-export async function getDailyAvgTransactionFee(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
-  return getStatistics(
-    '/api/app/statistics/dailyAvgTransactionFee',
-    input,
-    'GET_DAILY_AVG_TRANSACTION_FEE_FAILED',
-  );
+export async function getDailyAvgTransactionFee(
+  input: StatisticsQueryInput = {},
+): Promise<ToolResult<StatisticsListResponse>> {
+  return getStatistics('/api/app/statistics/dailyAvgTransactionFee', input, 'GET_DAILY_AVG_TRANSACTION_FEE_FAILED');
 }
 
-export async function getDailyTxFee(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyTxFee(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyTxFee', input, 'GET_DAILY_TX_FEE_FAILED');
 }
 
-export async function getDailyTotalBurnt(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyTotalBurnt(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyTotalBurnt', input, 'GET_DAILY_TOTAL_BURNT_FAILED');
 }
 
-export async function getDailyElfPrice(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyElfPrice(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyElfPrice', input, 'GET_DAILY_ELF_PRICE_FAILED');
 }
 
-export async function getDailyDeployContract(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyDeployContract(
+  input: StatisticsQueryInput = {},
+): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyDeployContract', input, 'GET_DAILY_DEPLOY_CONTRACT_FAILED');
 }
 
-export async function getDailyBlockReward(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyBlockReward(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyBlockReward', input, 'GET_DAILY_BLOCK_REWARD_FAILED');
 }
 
-export async function getDailyAvgBlockSize(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyAvgBlockSize(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyAvgBlockSize', input, 'GET_DAILY_AVG_BLOCK_SIZE_FAILED');
 }
 
-export async function getTopContractCall(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getTopContractCall(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/topContractCall', input, 'GET_TOP_CONTRACT_CALL_FAILED');
 }
 
-export async function getDailyContractCall(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyContractCall(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyContractCall', input, 'GET_DAILY_CONTRACT_CALL_FAILED');
 }
 
-export async function getDailySupplyGrowth(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailySupplyGrowth(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailySupplyGrowth', input, 'GET_DAILY_SUPPLY_GROWTH_FAILED');
 }
 
-export async function getDailyMarketCap(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyMarketCap(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyMarketCap', input, 'GET_DAILY_MARKET_CAP_FAILED');
 }
 
-export async function getDailyStaked(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyStaked(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyStaked', input, 'GET_DAILY_STAKED_FAILED');
 }
 
-export async function getDailyHolder(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyHolder(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyHolder', input, 'GET_DAILY_HOLDER_FAILED');
 }
 
-export async function getDailyTvl(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getDailyTvl(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/dailyTvl', input, 'GET_DAILY_TVL_FAILED');
 }
 
-export async function getNodeCurrentProduceInfo(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getNodeCurrentProduceInfo(
+  input: StatisticsQueryInput = {},
+): Promise<ToolResult<NodeCurrentProduceInfoResponse>> {
   return getStatistics('/api/app/statistics/nodeCurrentProduceInfo', input, 'GET_NODE_CURRENT_PRODUCE_INFO_FAILED');
 }
 
-export async function getElfSupply(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getElfSupply(input: StatisticsQueryInput = {}): Promise<ToolResult<ElfSupplyResponse>> {
   return getStatistics('/api/app/statistics/elfSupply', input, 'GET_ELF_SUPPLY_FAILED');
 }
 
-export async function getDailyTransactionInfo(input: StatisticsDateRangeInput): Promise<ToolResult<unknown>> {
+export async function getDailyTransactionInfo(
+  input: StatisticsDateRangeInput,
+): Promise<ToolResult<DailyTransactionInfoResponse>> {
   return getDateRangeStatistics('/api/app/statistics/dailyTransactionInfo', input, 'GET_DAILY_TRANSACTION_INFO_FAILED');
 }
 
-export async function getDailyActivityAddress(input: StatisticsDateRangeInput): Promise<ToolResult<unknown>> {
+export async function getDailyActivityAddress(
+  input: StatisticsDateRangeInput,
+): Promise<ToolResult<DailyActivityAddressResponse>> {
   return getDateRangeStatistics('/api/app/statistics/dailyActivityAddress', input, 'GET_DAILY_ACTIVITY_ADDRESS_FAILED');
 }
 
-export async function getCurrencyPrice(input: StatisticsQueryInput = {}): Promise<ToolResult<unknown>> {
+export async function getCurrencyPrice(input: StatisticsQueryInput = {}): Promise<ToolResult<StatisticsListResponse>> {
   return getStatistics('/api/app/statistics/currencyPrice', input, 'GET_CURRENCY_PRICE_FAILED');
+}
+
+export const STATISTICS_METRICS = [
+  'dailyTransactions',
+  'uniqueAddresses',
+  'dailyActiveAddresses',
+  'monthlyActiveAddresses',
+  'blockProduceRate',
+  'avgBlockDuration',
+  'cycleCount',
+  'nodeBlockProduce',
+  'dailyAvgTransactionFee',
+  'dailyTxFee',
+  'dailyTotalBurnt',
+  'dailyElfPrice',
+  'dailyDeployContract',
+  'dailyBlockReward',
+  'dailyAvgBlockSize',
+  'topContractCall',
+  'dailyContractCall',
+  'dailySupplyGrowth',
+  'dailyMarketCap',
+  'dailyStaked',
+  'dailyHolder',
+  'dailyTvl',
+  'nodeCurrentProduceInfo',
+  'elfSupply',
+  'dailyTransactionInfo',
+  'dailyActivityAddress',
+  'currencyPrice',
+] as const satisfies ReadonlyArray<StatisticsMetric>;
+
+export async function getStatisticsByMetric(input: StatisticsMetricInput): Promise<ToolResult<unknown>> {
+  const { metric, ...payload } = input;
+
+  switch (metric) {
+    case 'dailyTransactions':
+      return getDailyTransactions(payload);
+    case 'uniqueAddresses':
+      return getUniqueAddresses(payload);
+    case 'dailyActiveAddresses':
+      return getDailyActiveAddresses(payload);
+    case 'monthlyActiveAddresses':
+      return getMonthlyActiveAddresses(payload);
+    case 'blockProduceRate':
+      return getBlockProduceRate(payload);
+    case 'avgBlockDuration':
+      return getAvgBlockDuration(payload);
+    case 'cycleCount':
+      return getCycleCount(payload);
+    case 'nodeBlockProduce':
+      return getNodeBlockProduce(payload);
+    case 'dailyAvgTransactionFee':
+      return getDailyAvgTransactionFee(payload);
+    case 'dailyTxFee':
+      return getDailyTxFee(payload);
+    case 'dailyTotalBurnt':
+      return getDailyTotalBurnt(payload);
+    case 'dailyElfPrice':
+      return getDailyElfPrice(payload);
+    case 'dailyDeployContract':
+      return getDailyDeployContract(payload);
+    case 'dailyBlockReward':
+      return getDailyBlockReward(payload);
+    case 'dailyAvgBlockSize':
+      return getDailyAvgBlockSize(payload);
+    case 'topContractCall':
+      return getTopContractCall(payload);
+    case 'dailyContractCall':
+      return getDailyContractCall(payload);
+    case 'dailySupplyGrowth':
+      return getDailySupplyGrowth(payload);
+    case 'dailyMarketCap':
+      return getDailyMarketCap(payload);
+    case 'dailyStaked':
+      return getDailyStaked(payload);
+    case 'dailyHolder':
+      return getDailyHolder(payload);
+    case 'dailyTvl':
+      return getDailyTvl(payload);
+    case 'nodeCurrentProduceInfo':
+      return getNodeCurrentProduceInfo(payload);
+    case 'elfSupply':
+      return getElfSupply(payload);
+    case 'dailyTransactionInfo':
+      return getDailyTransactionInfo(payload as StatisticsDateRangeInput);
+    case 'dailyActivityAddress':
+      return getDailyActivityAddress(payload as StatisticsDateRangeInput);
+    case 'currencyPrice':
+      return getCurrencyPrice(payload);
+    default: {
+      const unreachable: never = metric;
+      throw new Error(`Unsupported statistics metric: ${unreachable}`);
+    }
+  }
 }

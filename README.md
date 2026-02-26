@@ -10,6 +10,8 @@ AelfScan explorer skill toolkit for AI agents, with **SDK + MCP + CLI + OpenClaw
 - Token: token list/detail/transfers/holders
 - NFT: collections/detail/transfers/holders/inventory/item detail/item holders/item activity
 - Statistics: daily transactions/addresses/activity, produce metrics, fees/reward/burn, supply/market/staking/TVL, node/ELF supply and date-range summary APIs
+- Metadata-driven tool registry: one source of truth for SDK/CLI/MCP/OpenClaw
+- MCP output governance: array truncation + max chars + configurable raw payload inclusion
 - Unified output shape: `ToolResult<T>` with `traceId`, standardized errors, and `raw` payload
 
 ## Architecture
@@ -20,7 +22,8 @@ aelfscan-skill/
 ├── aelfscan_skill.ts        # CLI adapter
 ├── src/
 │   ├── core/                # Domain logic (search/blockchain/address/token/nft/statistics)
-│   └── mcp/server.ts        # MCP adapter
+│   ├── tooling/             # Single source tool descriptors
+│   └── mcp/                 # MCP adapter + output policy
 ├── lib/                     # Config/http/errors/trace/types
 ├── bin/setup.ts             # Setup for claude/cursor/openclaw
 ├── openclaw.json
@@ -58,6 +61,7 @@ bun run aelfscan_skill.ts blockchain log-events --input '{"chainId":"AELF","cont
 bun run aelfscan_skill.ts address detail --input '{"chainId":"AELF","address":"JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE"}'
 bun run aelfscan_skill.ts statistics daily-transactions --input '{"chainId":"AELF"}'
 bun run aelfscan_skill.ts statistics daily-transaction-info --input '{"chainId":"AELF","startDate":"2026-02-20","endDate":"2026-02-26"}'
+bun run aelfscan_skill.ts statistics metric --input '{"metric":"dailyTransactions","chainId":"AELF"}'
 ```
 
 ## MCP Config Example
@@ -72,12 +76,15 @@ bun run setup cursor
 bun run setup cursor --global
 bun run setup openclaw
 bun run setup list
+bun run build:openclaw
 ```
 
 ## Tests
 
 ```bash
 bun run test:unit
+bun run test:unit:coverage
+bun run coverage:badge
 bun run test:integration
 bun run test:e2e
 
@@ -91,6 +98,14 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 - `AELFSCAN_DEFAULT_CHAIN_ID` (default: empty for multi-chain)
 - `AELFSCAN_TIMEOUT_MS` (default: `10000`)
 - `AELFSCAN_RETRY` (default: `1`)
+- `AELFSCAN_RETRY_BASE_MS` (default: `200`)
+- `AELFSCAN_RETRY_MAX_MS` (default: `3000`)
+- `AELFSCAN_MAX_CONCURRENT_REQUESTS` (default: `5`)
+- `AELFSCAN_CACHE_TTL_MS` (default: `60000`)
+- `AELFSCAN_MAX_RESULT_COUNT` (default: `200`)
+- `AELFSCAN_MCP_MAX_ITEMS` (default: `50`)
+- `AELFSCAN_MCP_MAX_CHARS` (default: `60000`)
+- `AELFSCAN_MCP_INCLUDE_RAW` (default: `false`)
 
 ## License
 
