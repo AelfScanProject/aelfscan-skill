@@ -1,11 +1,13 @@
 import { request } from '../../lib/http-client.js';
 import { requireField } from '../../lib/errors.js';
+import type { SearchFiltersResponse, SearchResponse } from '../../lib/api-types.js';
 import type { SearchFiltersInput, SearchInput, ToolResult } from '../../lib/types.js';
 import { executeTool, resolveAddress, resolveChainId } from './common.js';
 
-export async function getSearchFilters(input: SearchFiltersInput = {}): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
-    const result = await request<unknown>({
+export async function getSearchFilters(input: SearchFiltersInput = {}): Promise<ToolResult<SearchFiltersResponse>> {
+  return executeTool(async (traceId) => {
+    const result = await request<SearchFiltersResponse>({
+      traceId,
       path: '/api/app/blockchain/filters',
       query: {
         chainId: resolveChainId(input.chainId),
@@ -16,11 +18,12 @@ export async function getSearchFilters(input: SearchFiltersInput = {}): Promise<
   }, 'SEARCH_FILTERS_FAILED');
 }
 
-export async function search(input: SearchInput): Promise<ToolResult<unknown>> {
-  return executeTool(async () => {
+export async function search(input: SearchInput): Promise<ToolResult<SearchResponse>> {
+  return executeTool(async (traceId) => {
     requireField(input.keyword, 'keyword');
 
-    const result = await request<unknown>({
+    const result = await request<SearchResponse>({
+      traceId,
       path: '/api/app/blockchain/search',
       query: {
         chainId: resolveChainId(input.chainId),

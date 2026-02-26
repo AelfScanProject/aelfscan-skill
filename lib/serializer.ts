@@ -36,9 +36,12 @@ function processObject(parts: string[], source: Record<string, unknown>, prefix?
       return;
     }
 
-    if (value === '' || value || value === 0 || value === false) {
-      pushQueryPart(parts, prefixedKey, value);
+    if (typeof value === 'number' && Number.isNaN(value)) {
+      return;
     }
+
+    // Primitive values reach here after null/undefined/object filtering.
+    pushQueryPart(parts, prefixedKey, value);
   });
 }
 
