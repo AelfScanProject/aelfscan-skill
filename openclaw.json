@@ -1,0 +1,726 @@
+{
+  "name": "aelfscan-skill",
+  "description": "AelfScan explorer tools for search, blockchain, addresses, tokens, NFTs, and statistics.",
+  "tools": [
+    {
+      "name": "aelfscan_accounts",
+      "description": "List top accounts",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "accounts"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_address_detail",
+      "description": "Get address detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_address_dictionary",
+      "description": "Resolve address dictionary metadata",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "address-dictionary"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_address_nft_assets",
+      "description": "Get address NFT assets",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "nft-assets"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_address_tokens",
+      "description": "Get address tokens",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "tokens"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_address_transfers",
+      "description": "Get address transfers",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "transfers"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_block_detail",
+      "description": "Get block detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "block-detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_blockchain_overview",
+      "description": "Get blockchain overview metrics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "overview"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_blocks",
+      "description": "List blocks",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "blocks"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_blocks_latest",
+      "description": "Get latest blocks",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "blocks-latest"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_contract_events",
+      "description": "Get contract events",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "contract-events"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_contract_history",
+      "description": "Get contract history",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "contract-history"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_contract_source",
+      "description": "Get contract source",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "contract-source"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_contracts",
+      "description": "List contracts",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "address",
+        "contracts"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_log_events",
+      "description": "Get contract log events",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "log-events"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_collection_detail",
+      "description": "Get NFT collection detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "collection-detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_collections",
+      "description": "List NFT collections",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "collections"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_holders",
+      "description": "Get NFT holders",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "holders"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_inventory",
+      "description": "Get NFT inventory",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "inventory"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_item_activity",
+      "description": "Get NFT item activity",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "item-activity"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_item_detail",
+      "description": "Get NFT item detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "item-detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_item_holders",
+      "description": "Get NFT item holders",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "item-holders"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_nft_transfers",
+      "description": "Get NFT transfers",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "nft",
+        "transfers"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_search",
+      "description": "Search explorer entities",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "search",
+        "query"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_search_filters",
+      "description": "Get search filter metadata",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "search",
+        "filters"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_avg_block_duration",
+      "description": "Get average block duration statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "avg-block-duration"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_block_produce_rate",
+      "description": "Get block produce rate statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "block-produce-rate"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_currency_price",
+      "description": "Get currency price statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "currency-price"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_cycle_count",
+      "description": "Get cycle count statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "cycle-count"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_active_addresses",
+      "description": "Get daily active addresses statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-active-addresses"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_activity_address",
+      "description": "Get daily activity address by date range",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-activity-address"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_avg_block_size",
+      "description": "Get daily average block size statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-avg-block-size"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_avg_transaction_fee",
+      "description": "Get daily average transaction fee statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-avg-transaction-fee"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_block_reward",
+      "description": "Get daily block reward statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-block-reward"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_contract_call",
+      "description": "Get daily contract call statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-contract-call"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_deploy_contract",
+      "description": "Get daily deploy contract statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-deploy-contract"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_elf_price",
+      "description": "Get daily ELF price statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-elf-price"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_holder",
+      "description": "Get daily holder statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-holder"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_market_cap",
+      "description": "Get daily market cap statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-market-cap"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_staked",
+      "description": "Get daily staked statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-staked"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_supply_growth",
+      "description": "Get daily supply growth statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-supply-growth"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_total_burnt",
+      "description": "Get daily total burnt statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-total-burnt"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_transaction_info",
+      "description": "Get daily transaction info by date range",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-transaction-info"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_transactions",
+      "description": "Get daily transactions statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-transactions"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_tvl",
+      "description": "Get daily TVL statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-tvl"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_daily_tx_fee",
+      "description": "Get daily transaction fee statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "daily-tx-fee"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_elf_supply",
+      "description": "Get ELF supply statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "elf-supply"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_monthly_active_addresses",
+      "description": "Get monthly active addresses statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "monthly-active-addresses"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_node_block_produce",
+      "description": "Get node block produce statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "node-block-produce"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_node_current_produce_info",
+      "description": "Get node current produce info",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "node-current-produce-info"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_top_contract_call",
+      "description": "Get top contract call statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "top-contract-call"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_statistics_unique_addresses",
+      "description": "Get unique addresses statistics",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "statistics",
+        "unique-addresses"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_token_detail",
+      "description": "Get token detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "token",
+        "detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_token_holders",
+      "description": "Get token holders",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "token",
+        "holders"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_token_transfers",
+      "description": "Get token transfers",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "token",
+        "transfers"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_tokens",
+      "description": "List tokens",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "token",
+        "list"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_transaction_data_chart",
+      "description": "Get transaction data chart",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "transaction-data-chart"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_transaction_detail",
+      "description": "Get transaction detail",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "transaction-detail"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_transactions",
+      "description": "List transactions",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "transactions"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "aelfscan_transactions_latest",
+      "description": "Get latest transactions",
+      "command": "bun",
+      "args": [
+        "run",
+        "aelfscan_skill.ts",
+        "blockchain",
+        "transactions-latest"
+      ],
+      "cwd": "."
+    }
+  ]
+}
