@@ -102,6 +102,7 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 - `AELFSCAN_RETRY_MAX_MS` (default: `3000`)
 - `AELFSCAN_MAX_CONCURRENT_REQUESTS` (default: `5`)
 - `AELFSCAN_CACHE_TTL_MS` (default: `60000`)
+- `AELFSCAN_CACHE_MAX_ENTRIES` (default: `500`)
 - `AELFSCAN_MAX_RESULT_COUNT` (default: `200`)
 - `AELFSCAN_MCP_MAX_ITEMS` (default: `50`)
 - `AELFSCAN_MCP_MAX_CHARS` (default: `60000`)

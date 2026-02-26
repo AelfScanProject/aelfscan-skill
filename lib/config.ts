@@ -8,6 +8,7 @@ const DEFAULT_RETRY_BASE_MS = 200;
 const DEFAULT_RETRY_MAX_MS = 3_000;
 const DEFAULT_MAX_CONCURRENT_REQUESTS = 5;
 const DEFAULT_CACHE_TTL_MS = 60_000;
+const DEFAULT_CACHE_MAX_ENTRIES = 500;
 const DEFAULT_MAX_RESULT_COUNT = 200;
 const DEFAULT_MCP_MAX_ITEMS = 50;
 const DEFAULT_MCP_MAX_CHARS = 60_000;
@@ -61,6 +62,7 @@ export function getConfig(): AelfscanConfig {
       toNumber(process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS, DEFAULT_MAX_CONCURRENT_REQUESTS),
     ),
     cacheTtlMs: Math.floor(toNumber(process.env.AELFSCAN_CACHE_TTL_MS, DEFAULT_CACHE_TTL_MS)),
+    cacheMaxEntries: Math.floor(toNumber(process.env.AELFSCAN_CACHE_MAX_ENTRIES, DEFAULT_CACHE_MAX_ENTRIES)),
     maxResultCount: Math.floor(toNumber(process.env.AELFSCAN_MAX_RESULT_COUNT, DEFAULT_MAX_RESULT_COUNT)),
     mcpMaxItems: Math.floor(toNumber(process.env.AELFSCAN_MCP_MAX_ITEMS, DEFAULT_MCP_MAX_ITEMS)),
     mcpMaxChars: Math.floor(toNumber(process.env.AELFSCAN_MCP_MAX_CHARS, DEFAULT_MCP_MAX_CHARS)),

@@ -33,6 +33,4 @@ jobs:
         run: bun run test:unit:coverage
 
       - name: Verify generated openclaw config
-        run: |
-          bun run build:openclaw
-          git diff --exit-code openclaw.json
+        run: bun run build:openclaw:check

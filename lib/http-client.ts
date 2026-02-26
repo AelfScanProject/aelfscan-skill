@@ -106,8 +106,52 @@ function getCacheKey(method: 'GET' | 'POST', url: string): string {
   return `${method}:${url}`;
 }
 
+function getCachedValue<T>(cacheKey: string): HttpClientResult<T> | null {
+  const cached = responseCache.get(cacheKey);
+  if (!cached) {
+    return null;
+  }
+
+  if (cached.expiresAt <= Date.now()) {
+    responseCache.delete(cacheKey);
+    return null;
+  }
+
+  // Keep most recently used cache item at the tail.
+  responseCache.delete(cacheKey);
+  responseCache.set(cacheKey, cached);
+  return cached.value as HttpClientResult<T>;
+}
+
+function setCachedValue(cacheKey: string, value: HttpClientResult<unknown>, expiresAt: number, maxEntries: number): void {
+  if (maxEntries <= 0) {
+    return;
+  }
+
+  if (responseCache.has(cacheKey)) {
+    responseCache.delete(cacheKey);
+  }
+
+  responseCache.set(cacheKey, { expiresAt, value });
+
+  while (responseCache.size > maxEntries) {
+    const oldest = responseCache.keys().next().value;
+    if (oldest === undefined) {
+      break;
+    }
+    responseCache.delete(oldest);
+  }
+}
+
 export function resetHttpClientState(): void {
   responseCache.clear();
+  activeRequests = 0;
+  while (pendingResolvers.length > 0) {
+    const next = pendingResolvers.shift();
+    if (next) {
+      next();
+    }
+  }
 }
 
 export async function request<T>(options: HttpRequestOptions): Promise<HttpClientResult<T>> {
@@ -118,12 +162,13 @@ export async function request<T>(options: HttpRequestOptions): Promise<HttpClien
   const url = `${config.apiBaseUrl}${path}${queryString ? `?${queryString}` : ''}`;
   const traceId = options.traceId;
   const cacheTtlMs = getCacheTtlMs(method, path, options);
+  const cacheMaxEntries = Math.max(0, config.cacheMaxEntries);
   const cacheKey = getCacheKey(method, url);
 
-  if (cacheTtlMs > 0 && method === 'GET') {
-    const cached = responseCache.get(cacheKey);
-    if (cached && cached.expiresAt > Date.now()) {
-      return cached.value as HttpClientResult<T>;
+  if (cacheTtlMs > 0 && cacheMaxEntries > 0 && method === 'GET') {
+    const cached = getCachedValue<T>(cacheKey);
+    if (cached) {
+      return cached;
     }
   }
 
@@ -164,11 +209,8 @@ export async function request<T>(options: HttpRequestOptions): Promise<HttpClien
           raw: envelope,
         };
 
-        if (cacheTtlMs > 0 && method === 'GET') {
-          responseCache.set(cacheKey, {
-            expiresAt: Date.now() + cacheTtlMs,
-            value: successResult as HttpClientResult<unknown>,
-          });
+        if (cacheTtlMs > 0 && cacheMaxEntries > 0 && method === 'GET') {
+          setCachedValue(cacheKey, successResult as HttpClientResult<unknown>, Date.now() + cacheTtlMs, cacheMaxEntries);
         }
 
         return successResult;
@@ -179,11 +221,8 @@ export async function request<T>(options: HttpRequestOptions): Promise<HttpClien
         raw: rawBody,
       };
 
-      if (cacheTtlMs > 0 && method === 'GET') {
-        responseCache.set(cacheKey, {
-          expiresAt: Date.now() + cacheTtlMs,
-          value: successResult as HttpClientResult<unknown>,
-        });
+      if (cacheTtlMs > 0 && cacheMaxEntries > 0 && method === 'GET') {
+        setCachedValue(cacheKey, successResult as HttpClientResult<unknown>, Date.now() + cacheTtlMs, cacheMaxEntries);
       }
 
       return successResult;

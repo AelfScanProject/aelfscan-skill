@@ -68,6 +68,10 @@ import {
 import { getTokenDetail, getTokenHolders, getTokens, getTokenTransfers } from '../core/token.js';
 
 export type ToolOutputPolicy = 'normal' | 'summary';
+export type ToolAdapter = 'sdk' | 'cli' | 'mcp' | 'openclaw';
+
+const DEFAULT_ADAPTERS = ['sdk', 'cli', 'mcp', 'openclaw'] as const;
+const DETAILED_STATISTICS_ADAPTERS = ['sdk', 'cli', 'openclaw'] as const;
 
 export interface ToolDescriptor {
   key: string;
@@ -80,6 +84,7 @@ export interface ToolDescriptor {
   parse: (input: unknown) => Record<string, unknown>;
   handler: (input: Record<string, unknown>) => Promise<ToolResult<unknown>>;
   outputPolicy: ToolOutputPolicy;
+  adapters: ReadonlyArray<ToolAdapter>;
 }
 
 function defineTool<S extends z.ZodRawShape, O = unknown>(config: {
@@ -91,6 +96,7 @@ function defineTool<S extends z.ZodRawShape, O = unknown>(config: {
   inputSchema: S;
   handler: (input: z.infer<z.ZodObject<S>>) => Promise<ToolResult<O>>;
   outputPolicy?: ToolOutputPolicy;
+  adapters?: ReadonlyArray<ToolAdapter>;
 }): ToolDescriptor {
   const parser = z.object(config.inputSchema).passthrough();
 
@@ -105,7 +111,24 @@ function defineTool<S extends z.ZodRawShape, O = unknown>(config: {
     parse: (input: unknown) => parser.parse(input) as Record<string, unknown>,
     handler: (input: Record<string, unknown>) => config.handler(input as z.infer<z.ZodObject<S>>) as Promise<ToolResult<unknown>>,
     outputPolicy: config.outputPolicy ?? 'normal',
+    adapters: config.adapters ?? DEFAULT_ADAPTERS,
   };
+}
+
+function defineDetailedStatisticsTool<S extends z.ZodRawShape, O = unknown>(config: {
+  key: string;
+  domain: string;
+  action: string;
+  mcpName: string;
+  description: string;
+  inputSchema: S;
+  handler: (input: z.infer<z.ZodObject<S>>) => Promise<ToolResult<O>>;
+  outputPolicy?: ToolOutputPolicy;
+}): ToolDescriptor {
+  return defineTool({
+    ...config,
+    adapters: DETAILED_STATISTICS_ADAPTERS,
+  });
 }
 
 const sortDirectionSchema = z.enum(['Asc', 'Desc']);
@@ -649,7 +672,7 @@ export const TOOL_DESCRIPTORS = [
     outputPolicy: 'summary',
   }),
 
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-transactions',
     domain: 'statistics',
     action: 'daily-transactions',
@@ -659,7 +682,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyTransactions,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.unique-addresses',
     domain: 'statistics',
     action: 'unique-addresses',
@@ -669,7 +692,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getUniqueAddresses,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-active-addresses',
     domain: 'statistics',
     action: 'daily-active-addresses',
@@ -679,7 +702,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyActiveAddresses,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.monthly-active-addresses',
     domain: 'statistics',
     action: 'monthly-active-addresses',
@@ -689,7 +712,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getMonthlyActiveAddresses,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.block-produce-rate',
     domain: 'statistics',
     action: 'block-produce-rate',
@@ -699,7 +722,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getBlockProduceRate,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.avg-block-duration',
     domain: 'statistics',
     action: 'avg-block-duration',
@@ -709,7 +732,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getAvgBlockDuration,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.cycle-count',
     domain: 'statistics',
     action: 'cycle-count',
@@ -719,7 +742,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getCycleCount,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.node-block-produce',
     domain: 'statistics',
     action: 'node-block-produce',
@@ -729,7 +752,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getNodeBlockProduce,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-avg-transaction-fee',
     domain: 'statistics',
     action: 'daily-avg-transaction-fee',
@@ -739,7 +762,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyAvgTransactionFee,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-tx-fee',
     domain: 'statistics',
     action: 'daily-tx-fee',
@@ -749,7 +772,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyTxFee,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-total-burnt',
     domain: 'statistics',
     action: 'daily-total-burnt',
@@ -759,7 +782,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyTotalBurnt,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-elf-price',
     domain: 'statistics',
     action: 'daily-elf-price',
@@ -769,7 +792,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyElfPrice,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-deploy-contract',
     domain: 'statistics',
     action: 'daily-deploy-contract',
@@ -779,7 +802,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyDeployContract,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-block-reward',
     domain: 'statistics',
     action: 'daily-block-reward',
@@ -789,7 +812,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyBlockReward,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-avg-block-size',
     domain: 'statistics',
     action: 'daily-avg-block-size',
@@ -799,7 +822,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyAvgBlockSize,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.top-contract-call',
     domain: 'statistics',
     action: 'top-contract-call',
@@ -809,7 +832,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getTopContractCall,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-contract-call',
     domain: 'statistics',
     action: 'daily-contract-call',
@@ -819,7 +842,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyContractCall,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-supply-growth',
     domain: 'statistics',
     action: 'daily-supply-growth',
@@ -829,7 +852,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailySupplyGrowth,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-market-cap',
     domain: 'statistics',
     action: 'daily-market-cap',
@@ -839,7 +862,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyMarketCap,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-staked',
     domain: 'statistics',
     action: 'daily-staked',
@@ -849,7 +872,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyStaked,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-holder',
     domain: 'statistics',
     action: 'daily-holder',
@@ -859,7 +882,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyHolder,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-tvl',
     domain: 'statistics',
     action: 'daily-tvl',
@@ -869,7 +892,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyTvl,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.node-current-produce-info',
     domain: 'statistics',
     action: 'node-current-produce-info',
@@ -879,7 +902,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getNodeCurrentProduceInfo,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.elf-supply',
     domain: 'statistics',
     action: 'elf-supply',
@@ -889,7 +912,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getElfSupply,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-transaction-info',
     domain: 'statistics',
     action: 'daily-transaction-info',
@@ -899,7 +922,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyTransactionInfo,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.daily-activity-address',
     domain: 'statistics',
     action: 'daily-activity-address',
@@ -909,7 +932,7 @@ export const TOOL_DESCRIPTORS = [
     handler: getDailyActivityAddress,
     outputPolicy: 'summary',
   }),
-  defineTool({
+  defineDetailedStatisticsTool({
     key: 'statistics.currency-price',
     domain: 'statistics',
     action: 'currency-price',
@@ -923,4 +946,9 @@ export const TOOL_DESCRIPTORS = [
 
 export const TOOL_DESCRIPTOR_BY_KEY = new Map(TOOL_DESCRIPTORS.map(tool => [tool.key, tool]));
 
-export const TOOL_DESCRIPTOR_BY_MCP_NAME = new Map(TOOL_DESCRIPTORS.map(tool => [tool.mcpName, tool]));
+export const MCP_TOOL_DESCRIPTORS = TOOL_DESCRIPTORS.filter(tool => tool.adapters.includes('mcp'));
+export const CLI_TOOL_DESCRIPTORS = TOOL_DESCRIPTORS.filter(tool => tool.adapters.includes('cli'));
+export const OPENCLAW_TOOL_DESCRIPTORS = TOOL_DESCRIPTORS.filter(tool => tool.adapters.includes('openclaw'));
+
+export const CLI_TOOL_DESCRIPTOR_BY_KEY = new Map(CLI_TOOL_DESCRIPTORS.map(tool => [tool.key, tool]));
+export const TOOL_DESCRIPTOR_BY_MCP_NAME = new Map(MCP_TOOL_DESCRIPTORS.map(tool => [tool.mcpName, tool]));

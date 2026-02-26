@@ -50,6 +50,7 @@ export interface AelfscanConfig {
   retryMaxMs: number;
   maxConcurrentRequests: number;
   cacheTtlMs: number;
+  cacheMaxEntries: number;
   maxResultCount: number;
   mcpMaxItems: number;
   mcpMaxChars: number;

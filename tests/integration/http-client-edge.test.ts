@@ -9,6 +9,7 @@ const ENV_KEYS = [
   'AELFSCAN_RETRY_BASE_MS',
   'AELFSCAN_RETRY_MAX_MS',
   'AELFSCAN_CACHE_TTL_MS',
+  'AELFSCAN_CACHE_MAX_ENTRIES',
   'AELFSCAN_MAX_CONCURRENT_REQUESTS',
 ] as const;
 
@@ -34,6 +35,7 @@ beforeEach(() => {
     AELFSCAN_RETRY_BASE_MS: process.env.AELFSCAN_RETRY_BASE_MS,
     AELFSCAN_RETRY_MAX_MS: process.env.AELFSCAN_RETRY_MAX_MS,
     AELFSCAN_CACHE_TTL_MS: process.env.AELFSCAN_CACHE_TTL_MS,
+    AELFSCAN_CACHE_MAX_ENTRIES: process.env.AELFSCAN_CACHE_MAX_ENTRIES,
     AELFSCAN_MAX_CONCURRENT_REQUESTS: process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS,
   };
   resetConfigCache();
@@ -142,6 +144,7 @@ describe('http client edge cases', () => {
 
   test('uses statistics GET cache by default ttl', async () => {
     process.env.AELFSCAN_CACHE_TTL_MS = '60000';
+    process.env.AELFSCAN_CACHE_MAX_ENTRIES = '100';
     resetConfigCache();
     resetHttpClientState();
 
@@ -158,6 +161,29 @@ describe('http client edge cases', () => {
     await request({ path: '/api/app/statistics/dailyTransactions', query: { chainId: 'AELF' } });
 
     expect(callCount).toBe(1);
+  });
+
+  test('evicts oldest cache entries when cache exceeds max size', async () => {
+    process.env.AELFSCAN_CACHE_TTL_MS = '60000';
+    process.env.AELFSCAN_CACHE_MAX_ENTRIES = '2';
+    resetConfigCache();
+    resetHttpClientState();
+
+    let callCount = 0;
+    globalThis.fetch = (async () => {
+      callCount += 1;
+      return new Response(JSON.stringify({ code: '20000', data: { ok: true }, message: '' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    await request({ path: '/api/app/statistics/dailyTransactions', query: { chainId: 'AELF' } });
+    await request({ path: '/api/app/statistics/dailyTransactions', query: { chainId: 'tDVV' } });
+    await request({ path: '/api/app/statistics/dailyTransactions', query: { chainId: 'tDVW' } });
+    await request({ path: '/api/app/statistics/dailyTransactions', query: { chainId: 'AELF' } });
+
+    expect(callCount).toBe(4);
   });
 
   test('limits concurrent requests by semaphore', async () => {
@@ -191,6 +217,53 @@ describe('http client edge cases', () => {
     );
 
     expect(peak).toBeLessThanOrEqual(2);
+  });
+
+  test('resetHttpClientState clears pending queue and allows queued requests to continue', async () => {
+    process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS = '1';
+    process.env.AELFSCAN_TIMEOUT_MS = '2000';
+    process.env.AELFSCAN_RETRY = '0';
+    resetConfigCache();
+    resetHttpClientState();
+
+    let callCount = 0;
+    let releaseFirstFetch: (() => void) | undefined;
+
+    globalThis.fetch = (async () => {
+      callCount += 1;
+
+      if (callCount === 1) {
+        await new Promise<void>((resolve) => {
+          releaseFirstFetch = resolve;
+        });
+      }
+
+      return new Response(JSON.stringify({ code: '20000', data: { ok: true }, message: '' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const firstRequest = request({ path: '/api/reset-state-1', disableCache: true });
+    await new Promise(resolve => setTimeout(resolve, 10));
+
+    const secondRequest = request({ path: '/api/reset-state-2', disableCache: true });
+    let secondCompleted = false;
+    void secondRequest.then(() => {
+      secondCompleted = true;
+    });
+    await new Promise(resolve => setTimeout(resolve, 10));
+    expect(secondCompleted).toBe(false);
+
+    resetHttpClientState();
+
+    const second = await secondRequest;
+    expect(second.data).toEqual({ ok: true });
+
+    if (releaseFirstFetch) {
+      releaseFirstFetch();
+    }
+    await firstRequest;
   });
 
   test('does not retry for 4xx http errors', async () => {

@@ -10,6 +10,7 @@ const ENV_KEYS = [
   'AELFSCAN_RETRY_MAX_MS',
   'AELFSCAN_MAX_CONCURRENT_REQUESTS',
   'AELFSCAN_CACHE_TTL_MS',
+  'AELFSCAN_CACHE_MAX_ENTRIES',
   'AELFSCAN_MAX_RESULT_COUNT',
   'AELFSCAN_MCP_MAX_ITEMS',
   'AELFSCAN_MCP_MAX_CHARS',
@@ -41,6 +42,7 @@ beforeEach(() => {
     AELFSCAN_RETRY_MAX_MS: process.env.AELFSCAN_RETRY_MAX_MS,
     AELFSCAN_MAX_CONCURRENT_REQUESTS: process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS,
     AELFSCAN_CACHE_TTL_MS: process.env.AELFSCAN_CACHE_TTL_MS,
+    AELFSCAN_CACHE_MAX_ENTRIES: process.env.AELFSCAN_CACHE_MAX_ENTRIES,
     AELFSCAN_MAX_RESULT_COUNT: process.env.AELFSCAN_MAX_RESULT_COUNT,
     AELFSCAN_MCP_MAX_ITEMS: process.env.AELFSCAN_MCP_MAX_ITEMS,
     AELFSCAN_MCP_MAX_CHARS: process.env.AELFSCAN_MCP_MAX_CHARS,
@@ -64,6 +66,7 @@ describe('config', () => {
     process.env.AELFSCAN_RETRY_MAX_MS = '900';
     process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS = '8';
     process.env.AELFSCAN_CACHE_TTL_MS = '5000';
+    process.env.AELFSCAN_CACHE_MAX_ENTRIES = '666';
     process.env.AELFSCAN_MAX_RESULT_COUNT = '300';
     process.env.AELFSCAN_MCP_MAX_ITEMS = '80';
     process.env.AELFSCAN_MCP_MAX_CHARS = '80000';
@@ -79,6 +82,7 @@ describe('config', () => {
     expect(config.retryMaxMs).toBe(900);
     expect(config.maxConcurrentRequests).toBe(8);
     expect(config.cacheTtlMs).toBe(5000);
+    expect(config.cacheMaxEntries).toBe(666);
     expect(config.maxResultCount).toBe(300);
     expect(config.mcpMaxItems).toBe(80);
     expect(config.mcpMaxChars).toBe(80000);
@@ -92,6 +96,7 @@ describe('config', () => {
     process.env.AELFSCAN_RETRY_MAX_MS = 'nan';
     process.env.AELFSCAN_MAX_CONCURRENT_REQUESTS = '-10';
     process.env.AELFSCAN_CACHE_TTL_MS = 'oops';
+    process.env.AELFSCAN_CACHE_MAX_ENTRIES = '-1';
     process.env.AELFSCAN_MAX_RESULT_COUNT = '-2';
     process.env.AELFSCAN_MCP_MAX_ITEMS = 'oops';
     process.env.AELFSCAN_MCP_MAX_CHARS = '-1';
@@ -105,6 +110,7 @@ describe('config', () => {
     expect(config.retryMaxMs).toBe(3000);
     expect(config.maxConcurrentRequests).toBe(5);
     expect(config.cacheTtlMs).toBe(60000);
+    expect(config.cacheMaxEntries).toBe(500);
     expect(config.maxResultCount).toBe(200);
     expect(config.mcpMaxItems).toBe(50);
     expect(config.mcpMaxChars).toBe(60000);

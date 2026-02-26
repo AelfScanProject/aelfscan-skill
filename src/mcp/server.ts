@@ -1,15 +1,16 @@
 #!/usr/bin/env bun
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import packageJson from '../../package.json';
 import { asMcpResult } from './output.js';
-import { TOOL_DESCRIPTORS } from '../tooling/tool-descriptors.js';
+import { MCP_TOOL_DESCRIPTORS } from '../tooling/tool-descriptors.js';
 
 const server = new McpServer({
   name: 'aelfscan-skill',
-  version: '0.2.0',
+  version: packageJson.version,
 });
 
-for (const descriptor of TOOL_DESCRIPTORS) {
+for (const descriptor of MCP_TOOL_DESCRIPTORS) {
   server.registerTool(
     descriptor.mcpName,
     {

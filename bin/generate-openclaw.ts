@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { TOOL_DESCRIPTORS } from '../src/tooling/tool-descriptors.js';
+import { OPENCLAW_TOOL_DESCRIPTORS } from '../src/tooling/tool-descriptors.js';
 
 const packageRoot = path.resolve(import.meta.dir, '..');
 const targetPath = path.join(packageRoot, 'openclaw.json');
@@ -9,7 +9,7 @@ const targetPath = path.join(packageRoot, 'openclaw.json');
 const openclaw = {
   name: 'aelfscan-skill',
   description: 'AelfScan explorer tools for search, blockchain, addresses, tokens, NFTs, and statistics.',
-  tools: TOOL_DESCRIPTORS.map(descriptor => ({
+  tools: OPENCLAW_TOOL_DESCRIPTORS.map(descriptor => ({
     name: descriptor.mcpName,
     description: descriptor.description,
     command: 'bun',

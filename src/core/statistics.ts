@@ -209,67 +209,41 @@ export const STATISTICS_METRICS = [
   'currencyPrice',
 ] as const satisfies ReadonlyArray<StatisticsMetric>;
 
+type StatisticsMetricPayload = Omit<StatisticsMetricInput, 'metric'>;
+type StatisticsMetricHandler = (input: StatisticsMetricPayload) => Promise<ToolResult<unknown>>;
+
+const STATISTICS_METRIC_HANDLER_MAP: Record<StatisticsMetric, StatisticsMetricHandler> = {
+  dailyTransactions: getDailyTransactions,
+  uniqueAddresses: getUniqueAddresses,
+  dailyActiveAddresses: getDailyActiveAddresses,
+  monthlyActiveAddresses: getMonthlyActiveAddresses,
+  blockProduceRate: getBlockProduceRate,
+  avgBlockDuration: getAvgBlockDuration,
+  cycleCount: getCycleCount,
+  nodeBlockProduce: getNodeBlockProduce,
+  dailyAvgTransactionFee: getDailyAvgTransactionFee,
+  dailyTxFee: getDailyTxFee,
+  dailyTotalBurnt: getDailyTotalBurnt,
+  dailyElfPrice: getDailyElfPrice,
+  dailyDeployContract: getDailyDeployContract,
+  dailyBlockReward: getDailyBlockReward,
+  dailyAvgBlockSize: getDailyAvgBlockSize,
+  topContractCall: getTopContractCall,
+  dailyContractCall: getDailyContractCall,
+  dailySupplyGrowth: getDailySupplyGrowth,
+  dailyMarketCap: getDailyMarketCap,
+  dailyStaked: getDailyStaked,
+  dailyHolder: getDailyHolder,
+  dailyTvl: getDailyTvl,
+  nodeCurrentProduceInfo: getNodeCurrentProduceInfo,
+  elfSupply: getElfSupply,
+  dailyTransactionInfo: input => getDailyTransactionInfo(input as StatisticsDateRangeInput),
+  dailyActivityAddress: input => getDailyActivityAddress(input as StatisticsDateRangeInput),
+  currencyPrice: getCurrencyPrice,
+};
+
 export async function getStatisticsByMetric(input: StatisticsMetricInput): Promise<ToolResult<unknown>> {
   const { metric, ...payload } = input;
-
-  switch (metric) {
-    case 'dailyTransactions':
-      return getDailyTransactions(payload);
-    case 'uniqueAddresses':
-      return getUniqueAddresses(payload);
-    case 'dailyActiveAddresses':
-      return getDailyActiveAddresses(payload);
-    case 'monthlyActiveAddresses':
-      return getMonthlyActiveAddresses(payload);
-    case 'blockProduceRate':
-      return getBlockProduceRate(payload);
-    case 'avgBlockDuration':
-      return getAvgBlockDuration(payload);
-    case 'cycleCount':
-      return getCycleCount(payload);
-    case 'nodeBlockProduce':
-      return getNodeBlockProduce(payload);
-    case 'dailyAvgTransactionFee':
-      return getDailyAvgTransactionFee(payload);
-    case 'dailyTxFee':
-      return getDailyTxFee(payload);
-    case 'dailyTotalBurnt':
-      return getDailyTotalBurnt(payload);
-    case 'dailyElfPrice':
-      return getDailyElfPrice(payload);
-    case 'dailyDeployContract':
-      return getDailyDeployContract(payload);
-    case 'dailyBlockReward':
-      return getDailyBlockReward(payload);
-    case 'dailyAvgBlockSize':
-      return getDailyAvgBlockSize(payload);
-    case 'topContractCall':
-      return getTopContractCall(payload);
-    case 'dailyContractCall':
-      return getDailyContractCall(payload);
-    case 'dailySupplyGrowth':
-      return getDailySupplyGrowth(payload);
-    case 'dailyMarketCap':
-      return getDailyMarketCap(payload);
-    case 'dailyStaked':
-      return getDailyStaked(payload);
-    case 'dailyHolder':
-      return getDailyHolder(payload);
-    case 'dailyTvl':
-      return getDailyTvl(payload);
-    case 'nodeCurrentProduceInfo':
-      return getNodeCurrentProduceInfo(payload);
-    case 'elfSupply':
-      return getElfSupply(payload);
-    case 'dailyTransactionInfo':
-      return getDailyTransactionInfo(payload as StatisticsDateRangeInput);
-    case 'dailyActivityAddress':
-      return getDailyActivityAddress(payload as StatisticsDateRangeInput);
-    case 'currencyPrice':
-      return getCurrencyPrice(payload);
-    default: {
-      const unreachable: never = metric;
-      throw new Error(`Unsupported statistics metric: ${unreachable}`);
-    }
-  }
+  const handler = STATISTICS_METRIC_HANDLER_MAP[metric];
+  return handler(payload);
 }

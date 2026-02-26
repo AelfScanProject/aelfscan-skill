@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import { ZodError } from 'zod';
-import { TOOL_DESCRIPTOR_BY_KEY } from './src/tooling/tool-descriptors.js';
+import { CLI_TOOL_DESCRIPTOR_BY_KEY } from './src/tooling/tool-descriptors.js';
 
 function parseInput(raw?: string): Record<string, unknown> {
   if (!raw) {
@@ -22,7 +22,7 @@ function parseInput(raw?: string): Record<string, unknown> {
 
 async function runCommand(domain: string, action: string, inputRaw?: string): Promise<void> {
   const key = `${domain}.${action}`;
-  const descriptor = TOOL_DESCRIPTOR_BY_KEY.get(key);
+  const descriptor = CLI_TOOL_DESCRIPTOR_BY_KEY.get(key);
 
   if (!descriptor) {
     throw new Error(`Unsupported command: ${key}`);

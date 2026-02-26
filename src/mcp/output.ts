@@ -171,20 +171,12 @@ export function asMcpResult(data: unknown, outputPolicy: ToolOutputPolicy = 'nor
     truncated: summaryApplied.truncated || truncatedArrays.truncated,
     maxItems,
     maxChars,
-    originalSizeEstimate: 0,
+    originalSizeEstimate: safeSerialize(truncatedArrays.value).length,
   };
 
-  let payload = attachMeta(truncatedArrays.value, initialMeta);
+  const meta: TruncationMeta = initialMeta;
+  let payload = attachMeta(truncatedArrays.value, meta);
   let serialized = safeSerialize(payload);
-
-  const originalSizeEstimate = serialized.length;
-  const meta: TruncationMeta = {
-    ...initialMeta,
-    originalSizeEstimate,
-  };
-
-  payload = attachMeta(truncatedArrays.value, meta);
-  serialized = safeSerialize(payload);
 
   if (serialized.length > maxChars) {
     const reducedMeta: TruncationMeta = {
