@@ -46,7 +46,6 @@ const badge = {
   label: 'coverage',
   message: `${rounded}%`,
   color,
-  generatedAt: new Date().toISOString(),
 };
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });

@@ -15,6 +15,11 @@ const openclaw = {
     command: 'bun',
     args: ['run', 'aelfscan_skill.ts', descriptor.domain, descriptor.action],
     cwd: '.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      additionalProperties: true,
+    },
   })),
 };
 
