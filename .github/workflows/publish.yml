@@ -26,8 +26,8 @@ jobs:
       - name: Type check
         run: bunx tsc --noEmit
 
-      - name: Run tests
-        run: bun run test
+      - name: Coverage gate
+        run: bun run test:coverage:ci
 
       - name: Verify generated openclaw config
         run: bun run build:openclaw:check

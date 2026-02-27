@@ -1,5 +1,10 @@
 # AelfScan Skill Kit
 
+[中文](./README.zh-CN.md) | [English](./README.md)
+
+[![Unit Tests](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml/badge.svg)](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)](https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)
+
 面向 AI Agent 的 AelfScan 浏览器能力工具包，提供 **SDK + MCP + CLI + OpenClaw** 四种使用方式。
 
 ## 功能覆盖
@@ -49,6 +54,13 @@ cp .env.example .env
 
 ```bash
 bun run mcp
+```
+
+### OpenClaw
+
+```bash
+bun run build:openclaw
+bun run build:openclaw:check
 ```
 
 ### CLI 示例
@@ -111,3 +123,8 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 ## License
 
 MIT
+
+## 安全
+
+- API Token 和私钥仅通过环境变量或配置注入。
+- 工具输出中禁止泄露敏感字段。

@@ -1,5 +1,10 @@
 # AelfScan Skill Kit
 
+[English](./README.md) | [中文](./README.zh-CN.md)
+
+[![Unit Tests](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml/badge.svg)](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)](https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)
+
 AelfScan explorer skill toolkit for AI agents, with **SDK + MCP + CLI + OpenClaw** interfaces.
 
 ## Features
@@ -49,6 +54,13 @@ cp .env.example .env
 
 ```bash
 bun run mcp
+```
+
+### OpenClaw
+
+```bash
+bun run build:openclaw
+bun run build:openclaw:check
 ```
 
 ### Run CLI
@@ -111,3 +123,8 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 ## License
 
 MIT
+
+## Security
+
+- Keep API tokens and private keys in env/config only.
+- Never leak secret values in tool outputs.

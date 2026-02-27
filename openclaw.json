@@ -12,7 +12,12 @@
         "search",
         "filters"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_search",
@@ -24,7 +29,12 @@
         "search",
         "query"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_blocks",
@@ -36,7 +46,12 @@
         "blockchain",
         "blocks"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_blocks_latest",
@@ -48,7 +63,12 @@
         "blockchain",
         "blocks-latest"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_block_detail",
@@ -60,7 +80,12 @@
         "blockchain",
         "block-detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_transactions",
@@ -72,7 +97,12 @@
         "blockchain",
         "transactions"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_transactions_latest",
@@ -84,7 +114,12 @@
         "blockchain",
         "transactions-latest"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_transaction_detail",
@@ -96,7 +131,12 @@
         "blockchain",
         "transaction-detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_blockchain_overview",
@@ -108,7 +148,12 @@
         "blockchain",
         "overview"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_transaction_data_chart",
@@ -120,7 +165,12 @@
         "blockchain",
         "transaction-data-chart"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_address_dictionary",
@@ -132,7 +182,12 @@
         "blockchain",
         "address-dictionary"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_log_events",
@@ -144,7 +199,12 @@
         "blockchain",
         "log-events"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_accounts",
@@ -156,7 +216,12 @@
         "address",
         "accounts"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_contracts",
@@ -168,7 +233,12 @@
         "address",
         "contracts"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_address_detail",
@@ -180,7 +250,12 @@
         "address",
         "detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_address_tokens",
@@ -192,7 +267,12 @@
         "address",
         "tokens"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_address_nft_assets",
@@ -204,7 +284,12 @@
         "address",
         "nft-assets"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_address_transfers",
@@ -216,7 +301,12 @@
         "address",
         "transfers"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_contract_history",
@@ -228,7 +318,12 @@
         "address",
         "contract-history"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_contract_events",
@@ -240,7 +335,12 @@
         "address",
         "contract-events"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_contract_source",
@@ -252,7 +352,12 @@
         "address",
         "contract-source"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_tokens",
@@ -264,7 +369,12 @@
         "token",
         "list"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_token_detail",
@@ -276,7 +386,12 @@
         "token",
         "detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_token_transfers",
@@ -288,7 +403,12 @@
         "token",
         "transfers"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_token_holders",
@@ -300,7 +420,12 @@
         "token",
         "holders"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_collections",
@@ -312,7 +437,12 @@
         "nft",
         "collections"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_collection_detail",
@@ -324,7 +454,12 @@
         "nft",
         "collection-detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_transfers",
@@ -336,7 +471,12 @@
         "nft",
         "transfers"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_holders",
@@ -348,7 +488,12 @@
         "nft",
         "holders"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_inventory",
@@ -360,7 +505,12 @@
         "nft",
         "inventory"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_item_detail",
@@ -372,7 +522,12 @@
         "nft",
         "item-detail"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_item_holders",
@@ -384,7 +539,12 @@
         "nft",
         "item-holders"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_nft_item_activity",
@@ -396,7 +556,12 @@
         "nft",
         "item-activity"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics",
@@ -408,7 +573,12 @@
         "statistics",
         "metric"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_transactions",
@@ -420,7 +590,12 @@
         "statistics",
         "daily-transactions"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_unique_addresses",
@@ -432,7 +607,12 @@
         "statistics",
         "unique-addresses"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_active_addresses",
@@ -444,7 +624,12 @@
         "statistics",
         "daily-active-addresses"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_monthly_active_addresses",
@@ -456,7 +641,12 @@
         "statistics",
         "monthly-active-addresses"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_block_produce_rate",
@@ -468,7 +658,12 @@
         "statistics",
         "block-produce-rate"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_avg_block_duration",
@@ -480,7 +675,12 @@
         "statistics",
         "avg-block-duration"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_cycle_count",
@@ -492,7 +692,12 @@
         "statistics",
         "cycle-count"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_node_block_produce",
@@ -504,7 +709,12 @@
         "statistics",
         "node-block-produce"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_avg_transaction_fee",
@@ -516,7 +726,12 @@
         "statistics",
         "daily-avg-transaction-fee"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_tx_fee",
@@ -528,7 +743,12 @@
         "statistics",
         "daily-tx-fee"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_total_burnt",
@@ -540,7 +760,12 @@
         "statistics",
         "daily-total-burnt"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_elf_price",
@@ -552,7 +777,12 @@
         "statistics",
         "daily-elf-price"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_deploy_contract",
@@ -564,7 +794,12 @@
         "statistics",
         "daily-deploy-contract"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_block_reward",
@@ -576,7 +811,12 @@
         "statistics",
         "daily-block-reward"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_avg_block_size",
@@ -588,7 +828,12 @@
         "statistics",
         "daily-avg-block-size"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_top_contract_call",
@@ -600,7 +845,12 @@
         "statistics",
         "top-contract-call"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_contract_call",
@@ -612,7 +862,12 @@
         "statistics",
         "daily-contract-call"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_supply_growth",
@@ -624,7 +879,12 @@
         "statistics",
         "daily-supply-growth"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_market_cap",
@@ -636,7 +896,12 @@
         "statistics",
         "daily-market-cap"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_staked",
@@ -648,7 +913,12 @@
         "statistics",
         "daily-staked"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_holder",
@@ -660,7 +930,12 @@
         "statistics",
         "daily-holder"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_tvl",
@@ -672,7 +947,12 @@
         "statistics",
         "daily-tvl"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_node_current_produce_info",
@@ -684,7 +964,12 @@
         "statistics",
         "node-current-produce-info"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_elf_supply",
@@ -696,7 +981,12 @@
         "statistics",
         "elf-supply"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_transaction_info",
@@ -708,7 +998,12 @@
         "statistics",
         "daily-transaction-info"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_daily_activity_address",
@@ -720,7 +1015,12 @@
         "statistics",
         "daily-activity-address"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     },
     {
       "name": "aelfscan_statistics_currency_price",
@@ -732,7 +1032,12 @@
         "statistics",
         "currency-price"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
     }
   ]
 }
