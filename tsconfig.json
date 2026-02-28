@@ -8,7 +8,12 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": ["bun-types"]
+    "types": [
+      "bun-types"
+    ],
+    "noEmit": true
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "**/*.ts"
+  ]
 }
