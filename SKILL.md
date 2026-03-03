@@ -16,8 +16,8 @@ description: "AelfScan explorer data retrieval and analytics skill for agents."
 
 ## Safe usage rules
 - Never print private keys, mnemonics, or tokens in channel outputs.
-- For write operations, require explicit user confirmation and validate parameters before sending transactions.
-- Prefer `simulate` or read-only queries first when available.
+- This skill is read-only; do not attempt to execute chain writes via this package.
+- If user intent requires writes, route to wallet + domain write skills and keep this skill for analytics.
 
 ## Command recipes
 - Start MCP server: `bun run mcp`
@@ -28,5 +28,6 @@ description: "AelfScan explorer data retrieval and analytics skill for agents."
 
 ## Limits / Non-goals
 - This skill focuses on domain operations and adapters; it is not a full wallet custody system.
+- It does not consume signer context for transaction signing.
 - Do not hardcode environment secrets in source code or docs.
 - Avoid bypassing validation for external service calls.

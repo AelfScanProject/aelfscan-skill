@@ -120,6 +120,12 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 - `AELFSCAN_MCP_MAX_CHARS` (default: `60000`)
 - `AELFSCAN_MCP_INCLUDE_RAW` (default: `false`)
 
+## Wallet Context Compatibility
+
+- This skill is read-only and does not consume signer/private-key context for on-chain writes.
+- It is compatible with the shared wallet-context protocol (`~/.portkey/skill-wallet/context.v1.json`) used by write-capable skills.
+- `bun run deps:check` validates wallet-context schema version when a local context file exists.
+
 ## License
 
 MIT

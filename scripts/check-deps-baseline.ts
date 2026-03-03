@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 import { existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 
 type Baseline = {
@@ -44,8 +45,23 @@ function main() {
     }
   }
 
+  const contextPath =
+    process.env.PORTKEY_SKILL_WALLET_CONTEXT_PATH ||
+    resolve(homedir(), '.portkey', 'skill-wallet', 'context.v1.json');
+  if (existsSync(contextPath)) {
+    try {
+      const contextRaw = readJson<Record<string, unknown>>(contextPath);
+      if (contextRaw.version !== 1) {
+        failures.push(`wallet-context version expected 1, got ${String(contextRaw.version)}`);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      failures.push(`wallet-context parse failed: ${message}`);
+    }
+  }
+
   if (failures.length > 0) {
-    console.error('[deps:check] dependency baseline mismatch:');
+    console.error('[deps:check] check failed:');
     for (const failure of failures) {
       console.error(`- ${failure}`);
     }
