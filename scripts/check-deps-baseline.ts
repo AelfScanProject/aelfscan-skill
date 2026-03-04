@@ -2,6 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
+import Ajv from 'ajv';
 
 type Baseline = {
   dependencies: Record<string, string>;
@@ -15,6 +16,7 @@ function main() {
   const cwd = process.cwd();
   const baselinePath = resolve(cwd, 'deps-baseline.json');
   const packagePath = resolve(cwd, 'package.json');
+  const contextSchemaPath = resolve(cwd, 'schemas', 'wallet-context.v1.schema.json');
 
   if (!existsSync(baselinePath)) {
     console.error(`[deps:check] missing deps-baseline.json at ${baselinePath}`);
@@ -48,15 +50,23 @@ function main() {
   const contextPath =
     process.env.PORTKEY_SKILL_WALLET_CONTEXT_PATH ||
     resolve(homedir(), '.portkey', 'skill-wallet', 'context.v1.json');
-  if (existsSync(contextPath)) {
+  if (!existsSync(contextSchemaPath)) {
+    failures.push(`missing wallet-context schema: ${contextSchemaPath}`);
+  } else if (existsSync(contextPath)) {
     try {
+      const schema = readJson<Record<string, unknown>>(contextSchemaPath);
       const contextRaw = readJson<Record<string, unknown>>(contextPath);
-      if (contextRaw.version !== 1) {
-        failures.push(`wallet-context version expected 1, got ${String(contextRaw.version)}`);
+      const ajv = new Ajv({ allErrors: true, strict: false });
+      const validate = ajv.compile(schema);
+      if (!validate(contextRaw)) {
+        const details = (validate.errors || [])
+          .map((err) => `${err.instancePath || '/'} ${err.message || 'invalid'}`)
+          .join('; ');
+        failures.push(`wallet-context schema validation failed (${contextPath}): ${details}`);
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      failures.push(`wallet-context parse failed: ${message}`);
+      failures.push(`wallet-context parse/validation failed: ${message}`);
     }
   }
 
