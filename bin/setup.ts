@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import * as fs from 'node:fs';
+import packageJson from '../package.json';
 import {
   LOG,
   SERVER_NAME,
@@ -20,7 +21,7 @@ const program = new Command();
 program
   .name('aelfscan-setup')
   .description('Configure @aelfscan/agent-skills for Claude/Cursor/OpenClaw')
-  .version('0.1.0');
+  .version(packageJson.version);
 
 const withCommonMcpOptions = (command: Command) =>
   command
