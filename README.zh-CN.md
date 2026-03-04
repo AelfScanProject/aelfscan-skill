@@ -120,6 +120,12 @@ RUN_LIVE_TESTS=1 bun run test:e2e
 - `AELFSCAN_MCP_MAX_CHARS`（默认 `60000`）
 - `AELFSCAN_MCP_INCLUDE_RAW`（默认 `false`）
 
+## 钱包上下文兼容性
+
+- 本 skill 为只读，不消费 signer/private-key 上下文，也不执行链上写操作。
+- 兼容写能力 skill 使用的共享 wallet-context 协议（`~/.portkey/skill-wallet/context.v1.json`）。
+- 当本地存在 context 文件时，`bun run deps:check` 会校验 wallet-context schema 版本。
+
 ## License
 
 MIT
