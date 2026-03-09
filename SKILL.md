@@ -53,6 +53,12 @@ activation:
 - Verify OpenClaw config: `bun run build:openclaw:check`
 - Run CI coverage gate: `bun run test:coverage:ci`
 
+## Distribution / Activation
+- GitHub repo/tree URLs are discovery-only for hosts and agents.
+- Preferred IronClaw activation from npm: `bunx -p @aelfscan/agent-skills aelfscan-setup ironclaw`
+- Preferred OpenClaw activation from npm when managed install is unavailable: `bunx -p @aelfscan/agent-skills aelfscan-setup openclaw`
+- Local repo checkout is for development and smoke tests only.
+
 ## Limits / Non-goals
 - This skill focuses on domain operations and adapters; it is not a full wallet custody system.
 - It does not consume signer context for transaction signing.
