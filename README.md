@@ -5,7 +5,7 @@
 [![Unit Tests](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml/badge.svg)](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)](https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)
 
-AelfScan explorer skill toolkit for AI agents, with **SDK + MCP + CLI + OpenClaw** interfaces.
+AelfScan explorer skill toolkit for AI agents, with **SDK + MCP + CLI + OpenClaw + IronClaw** interfaces.
 
 ## Features
 
@@ -86,10 +86,32 @@ Use [`mcp-config.example.json`](./mcp-config.example.json).
 bun run setup claude
 bun run setup cursor
 bun run setup cursor --global
+bun run setup ironclaw
 bun run setup openclaw
 bun run setup list
 bun run build:openclaw
 ```
+
+## IronClaw
+
+```bash
+bun run setup ironclaw
+bun run setup uninstall ironclaw
+```
+
+The IronClaw setup writes a stdio MCP entry to `~/.ironclaw/mcp-servers.json` and installs this repo's `SKILL.md` to `~/.ironclaw/skills/aelfscan-skill/SKILL.md`.
+
+Important trust model note:
+
+- Use the trusted skill path above even for this read-only package so routing stays stable.
+- Do not rely on `~/.ironclaw/installed_skills/` for the primary install path.
+- This MCP server emits both standard MCP camelCase annotations and IronClaw-compatible snake_case annotations so the current IronClaw source can honor read-only hints.
+
+Minimal smoke test:
+
+1. `bun run setup ironclaw`
+2. Ask IronClaw to search AelfScan explorer data, such as `latest ELF transactions`
+3. Confirm the skill routes for analytics/search prompts and stays read-only
 
 ## Tests
 

@@ -10,12 +10,18 @@ const server = new McpServer({
   version: packageJson.version,
 });
 
+const READ_ONLY_ANNOTATIONS = {
+  readOnlyHint: true,
+  read_only_hint: true,
+} as const;
+
 for (const descriptor of MCP_TOOL_DESCRIPTORS) {
   server.registerTool(
     descriptor.mcpName,
     {
       description: descriptor.description,
       inputSchema: descriptor.inputSchema,
+      annotations: READ_ONLY_ANNOTATIONS,
     },
     async (input: Record<string, unknown>) => {
       const validatedInput = descriptor.parse(input);

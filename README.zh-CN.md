@@ -5,7 +5,7 @@
 [![Unit Tests](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml/badge.svg)](https://github.com/AelfScanProject/aelfscan-skill/actions/workflows/test.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)](https://AelfScanProject.github.io/aelfscan-skill/coverage-badge.json)
 
-面向 AI Agent 的 AelfScan 浏览器能力工具包，提供 **SDK + MCP + CLI + OpenClaw** 四种使用方式。
+面向 AI Agent 的 AelfScan 浏览器能力工具包，提供 **SDK + MCP + CLI + OpenClaw + IronClaw** 五种使用方式。
 
 ## 功能覆盖
 
@@ -86,10 +86,32 @@ bun run aelfscan_skill.ts statistics metric --input '{"metric":"dailyTransaction
 bun run setup claude
 bun run setup cursor
 bun run setup cursor --global
+bun run setup ironclaw
 bun run setup openclaw
 bun run setup list
 bun run build:openclaw
 ```
+
+## IronClaw
+
+```bash
+bun run setup ironclaw
+bun run setup uninstall ironclaw
+```
+
+IronClaw 安装会向 `~/.ironclaw/mcp-servers.json` 写入 stdio MCP entry，并把当前仓库的 `SKILL.md` 安装到 `~/.ironclaw/skills/aelfscan-skill/SKILL.md`。
+
+关于 trust model 的说明：
+
+- 即使这是只读 skill，也建议走上面的 trusted skill 路径，保证路由稳定。
+- 不要把 `~/.ironclaw/installed_skills/` 当成主安装路径。
+- 当前 MCP server 会同时输出标准 MCP camelCase annotations 和 IronClaw 兼容 snake_case annotations，确保 IronClaw 能识别 read-only hint。
+
+最短 smoke test：
+
+1. `bun run setup ironclaw`
+2. 让 IronClaw 查询 AelfScan 浏览器数据，例如 `latest ELF transactions`
+3. 确认 analytics/search prompt 会命中该 skill，且整个能力保持只读
 
 ## 测试
 

@@ -14,13 +14,20 @@ import {
 } from './platforms/utils.js';
 import { setupClaude, uninstallClaude } from './platforms/claude.js';
 import { setupCursor, uninstallCursor } from './platforms/cursor.js';
+import {
+  getIronclawMcpConfigPath,
+  getIronclawSkillInstallPath,
+  getIronclawSkillsDir,
+  setupIronclaw,
+  uninstallIronclaw,
+} from './platforms/ironclaw.js';
 import { setupOpenClaw, uninstallOpenClaw } from './platforms/openclaw.js';
 
 const program = new Command();
 
 program
   .name('aelfscan-setup')
-  .description('Configure @aelfscan/agent-skills for Claude/Cursor/OpenClaw')
+  .description('Configure @aelfscan/agent-skills for Claude/Cursor/OpenClaw/IronClaw')
   .version(packageJson.version);
 
 const withCommonMcpOptions = (command: Command) =>
@@ -58,6 +65,24 @@ withCommonMcpOptions(
   });
   console.log('');
 });
+
+program
+  .command('ironclaw')
+  .description('Setup trusted skill and MCP server for IronClaw')
+  .option('--mcp-config-path <path>', 'Custom IronClaw MCP config path')
+  .option('--skills-dir <path>', 'Custom IronClaw trusted skills directory')
+  .option('--server-path <path>', 'Custom path to MCP server.ts')
+  .option('--force', 'Overwrite existing aelfscan-skill entry', false)
+  .action(opts => {
+    console.log('\nConfiguring IronClaw...\n');
+    setupIronclaw({
+      mcpConfigPath: opts.mcpConfigPath,
+      skillsDir: opts.skillsDir,
+      serverPath: opts.serverPath,
+      force: opts.force,
+    });
+    console.log('');
+  });
 
 program
   .command('openclaw')
@@ -115,16 +140,34 @@ program
       `    Config file: ${cursorProjectExists ? 'exists' : 'not found'} | ${SERVER_NAME}: ${cursorProjectConfigured ? 'configured' : 'not configured'}`,
     );
 
+    const ironclawMcpPath = getIronclawMcpConfigPath();
+    const ironclawSkillsDir = getIronclawSkillsDir();
+    const ironclawSkillPath = getIronclawSkillInstallPath(ironclawSkillsDir);
+    const ironclawMcpExists = fs.existsSync(ironclawMcpPath);
+    const ironclawConfig = ironclawMcpExists ? readJsonFile(ironclawMcpPath) : null;
+    const ironclawConfigured = Array.isArray(ironclawConfig?.servers)
+      ? ironclawConfig.servers.some((server: any) => server?.name === SERVER_NAME)
+      : false;
+    const ironclawSkillExists = fs.existsSync(ironclawSkillPath);
+    console.log(`  IronClaw: ${ironclawMcpExists || ironclawSkillExists ? 'configured' : 'not configured'}`);
+    console.log(`    MCP file: ${ironclawMcpPath}`);
+    console.log(`    Trusted skill: ${ironclawSkillPath}`);
+    console.log(
+      `    MCP entry: ${ironclawConfigured ? 'configured' : 'not configured'} | skill file: ${ironclawSkillExists ? 'present' : 'missing'}`,
+    );
+
     console.log('');
-    LOG.info('Use `bun run setup claude|cursor|openclaw` to install.');
+    LOG.info('Use `bun run setup claude|cursor|ironclaw|openclaw` to install.');
     console.log('');
   });
 
 program
   .command('uninstall <platform>')
-  .description('Remove aelfscan-skill setup from platform (claude|cursor|openclaw)')
+  .description('Remove aelfscan-skill setup from platform (claude|cursor|ironclaw|openclaw)')
   .option('--global', 'For cursor uninstall global config', false)
   .option('--config-path <path>', 'Custom config file path')
+  .option('--mcp-config-path <path>', 'Custom IronClaw MCP config path')
+  .option('--skills-dir <path>', 'Custom IronClaw trusted skills directory')
   .action((platform, opts) => {
     console.log(`\nRemoving setup from ${platform}...\n`);
 
@@ -135,11 +178,17 @@ program
       case 'cursor':
         uninstallCursor({ global: opts.global, configPath: opts.configPath });
         break;
+      case 'ironclaw':
+        uninstallIronclaw({
+          mcpConfigPath: opts.mcpConfigPath,
+          skillsDir: opts.skillsDir,
+        });
+        break;
       case 'openclaw':
         uninstallOpenClaw({ configPath: opts.configPath });
         break;
       default:
-        LOG.error(`Unknown platform: ${platform}. Supported: claude, cursor, openclaw.`);
+        LOG.error(`Unknown platform: ${platform}. Supported: claude, cursor, ironclaw, openclaw.`);
         process.exitCode = 1;
         break;
     }

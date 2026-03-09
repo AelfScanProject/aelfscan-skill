@@ -18,6 +18,7 @@
     "lib/",
     "bin/",
     "aelfscan_skill.ts",
+    "SKILL.md",
     "openclaw.json",
     "mcp-config.example.json",
     "README.md",
@@ -39,7 +40,8 @@
     "test:e2e": "bun test tests/e2e/",
     "coverage:gate": "bun run scripts/coverage-gate.ts",
     "test:coverage:ci": "COVERAGE_MIN_LINES=85 COVERAGE_MIN_FUNCS=80 bun run test:unit:coverage && bun run coverage:gate",
-    "deps:check": "bun run scripts/check-deps-baseline.ts"
+    "deps:check": "bun run scripts/check-deps-baseline.ts",
+    "typecheck": "bunx tsc -p tsconfig.json --noEmit"
   },
   "keywords": [
     "aelfscan",
