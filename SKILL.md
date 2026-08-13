@@ -1,43 +1,21 @@
 ---
-name: "aelfscan-skill"
-version: "0.2.2"
-description: "AelfScan explorer data retrieval and analytics skill for agents."
-activation:
-  keywords:
-    - explorer
-    - analytics
-    - search
-    - address
-    - token
-    - nft
-    - statistics
-    - block
-    - transaction
-  exclude_keywords:
-    - transfer
-    - swap
-    - wallet
-    - guardian
-    - proposal
-  tags:
-    - explorer
-    - analytics
-    - aelf
-    - aelfscan
-  max_context_tokens: 1600
+name: aelfscan-skill
+description: AelfScan explorer retrieval and analytics for search, blocks, transactions, addresses, contracts, tokens, NFTs, statistics, historical charts, and network metrics. Use for indexed or aggregated AElf data; use a node skill for raw RPC calls and wallet or domain skills for state-changing operations.
 ---
 
 # AelfScan Skill
-
-## When to use
-- Use this skill when you need AelfScan explorer search and analytics data retrieval tasks.
-- Default to this skill for explorer, search, statistics, and historical analysis requests on aelf.
 
 ## Capabilities
 - Domain coverage: search, blockchain, address, token, NFT, statistics
 - Single tool descriptor source for SDK/CLI/MCP/OpenClaw
 - Supports SDK, CLI, MCP, OpenClaw, and IronClaw integration from one codebase.
 - MCP output governance controls and standardized trace-aware errors
+
+## Online configuration
+- The public API default is `https://aelfscan.io`; no API key or signer is required.
+- Set `AELFSCAN_API_BASE_URL` only for an alternate deployment. An empty `AELFSCAN_DEFAULT_CHAIN_ID` keeps queries multi-chain; callers may pass `AELF`, `tDVV`, or `tDVW` per request.
+- This explorer skill has no contract-address configuration because it reads indexed HTTP data instead of submitting contract calls.
+- Timeout, retry, concurrency, cache, pagination, and MCP output limits are documented in the packaged `.env.example`.
 
 ## Safe usage rules
 - Never print private keys, mnemonics, or tokens in channel outputs.
